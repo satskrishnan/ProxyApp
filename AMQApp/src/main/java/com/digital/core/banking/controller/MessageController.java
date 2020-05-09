@@ -41,4 +41,8 @@ public class MessageController {
 		return IntStream.range(0, 10).mapToObj(i -> "Hello number " + i).collect(Collectors.toList());
 	}
 
+	@GetMapping("/hello2")
+	public String sayHello2() {
+		return "Second Endpoint";
+	}
 }

@@ -30,18 +30,30 @@ public class MainRouter extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 
-		// Consumer queue
-		from("activemq://" + sQName).process(new Processor() {
+//		// Consumer queue
+//		from("activemq://" + sQName).process(new Processor() {
+//			@Override
+//			public void process(Exchange exchange) throws Exception {
+//
+//				String message = exchange.getIn().getBody(String.class);
+//				log.info("--------------------------------");
+//				log.info("Receive message '{}' from queue.", message);
+//				producerTemplate.sendBody("activemq://" + fQName, message);
+//				log.info("**********************************");
+//			}
+//		});
+
+		from("activemq://" + sQName).log("Incoming Message: ${body}").process(new Processor() {
 			@Override
 			public void process(Exchange exchange) throws Exception {
 
 				String message = exchange.getIn().getBody(String.class);
 				log.info("--------------------------------");
 				log.info("Receive message '{}' from queue.", message);
-				producerTemplate.sendBody("activemq://" + fQName, message);
 				log.info("**********************************");
-
 			}
-		});
+		}).multicast().parallelProcessing().to("activemq://" + fQName)
+				.to("jetty:http://localhost:8080/amqApp/api/hello").to("jetty:http://localhost:8080/amqApp/api/hello2")
+				.end();
 	}
 }
