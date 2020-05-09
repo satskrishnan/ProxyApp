@@ -47,7 +47,7 @@ public class MainRouter extends RouteBuilder {
 				log.info("Receive message '{}' from queue.", message);
 				log.info("**********************************");
 			}
-		}).multicast().parallelProcessing().to("http://localhost:8080/amqApp/api/msg1").to("activemq://" + fQName)
-				.to("http://localhost:8080/amqApp/api/msg2").bean(EmailService.class, "sendEmail(${body})").end();
+		}).multicast().parallelProcessing().to("activemq://" + fQName).bean(EmailService.class, "sendEmail(${body})")
+				.end();
 	}
 }
