@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,8 +42,13 @@ public class MessageController {
 		return IntStream.range(0, 10).mapToObj(i -> "Hello number " + i).collect(Collectors.toList());
 	}
 
-	@GetMapping("/hello2")
-	public String sayHello2() {
-		return "Second Endpoint";
+	@PostMapping("/msg1")
+	public ResponseEntity<String> getMsg1(String msg) {
+		return new ResponseEntity<String>("Thanks " + msg + "!!!", HttpStatus.OK);
+	}
+
+	@PostMapping("/msg2")
+	public ResponseEntity<String> getMsg2(String msg) {
+		return new ResponseEntity<String>("Thank you " + msg + "!!!", HttpStatus.OK);
 	}
 }

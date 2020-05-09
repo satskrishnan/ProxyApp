@@ -1,15 +1,10 @@
 package com.digital.core.banking.consumer;
 
-import java.util.UUID;
-
 import org.apache.camel.Exchange;
-import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
-import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +19,8 @@ public class MainRouter extends RouteBuilder {
 	@Value("${response.queueName}")
 	private String fQName;
 
-	@Autowired
-	private ProducerTemplate producerTemplate;
+//	@Autowired
+//	private ProducerTemplate producerTemplate;
 
 	@Override
 	public void configure() throws Exception {
@@ -52,8 +47,7 @@ public class MainRouter extends RouteBuilder {
 				log.info("Receive message '{}' from queue.", message);
 				log.info("**********************************");
 			}
-		}).multicast().parallelProcessing().to("activemq://" + fQName)
-				.to("jetty:http://localhost:8080/amqApp/api/hello").to("jetty:http://localhost:8080/amqApp/api/hello2")
-				.end();
+		}).multicast().parallelProcessing().to("http://localhost:8080/amqApp/api/msg1").to("activemq://" + fQName)
+				.to("http://localhost:8080/amqApp/api/msg2").bean(EmailService.class, "sendEmail(${body})").end();
 	}
 }
