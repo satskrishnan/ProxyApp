@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "sender.queueName",
+    "type": "java.lang.String",
+    "description": "A description for 'sender.queueName'"
+  },
+  {
+    "name": "sender.queueName",
+    "type": "java.lang.String",
+    "description": "A description for 'sender.queueName'"
+  },
+  {
+    "name": "consumer.queueName",
+    "type": "java.lang.String",
+    "description": "A description for 'consumer.queueName'"
+  },
+  {
+    "name": "final.queue-name",
+    "type": "java.lang.String",
+    "description": "A description for 'final.queue-name'"
+  },
+  {
+    "name": "response.queue-name",
+    "type": "java.lang.String",
+    "description": "A description for 'response.queue-name'"
+  }
+]}
