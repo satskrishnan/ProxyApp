@@ -37,9 +37,11 @@
 		<appender-ref ref="FILE"></appender-ref>
 	</appender>
 
-	<logger name="org.springframework" level="DEBUG" />
-	<logger name="org.springframework.transaction" level="WARN" />
+	<logger name="org.springframework" level="ERROR" />
+	<logger name="org.springframework.transaction" level="ERROR" />
 	<logger name="com.digital.core.banking.*" level="INFO" />
+	<logger name="kong.unirest.*" level="ERROR" />
+
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />

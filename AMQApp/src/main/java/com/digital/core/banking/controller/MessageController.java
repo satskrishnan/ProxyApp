@@ -7,14 +7,19 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.WebAsyncTask;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.jms.Queue;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,12 +48,37 @@ public class MessageController {
 	}
 
 	@PostMapping("/msg1")
-	public ResponseEntity<String> getMsg1(String msg) {
+	@ResponseBody
+	public ResponseEntity<String> getMsg1(@Valid @RequestBody String msg) {
 		return new ResponseEntity<String>("Thanks " + msg + "!!!", HttpStatus.OK);
 	}
 
 	@PostMapping("/msg2")
-	public ResponseEntity<String> getMsg2(String msg) {
+	@ResponseBody
+	public ResponseEntity<String> getMsg2(@Valid @RequestBody String msg) {
 		return new ResponseEntity<String>("Thank you " + msg + "!!!", HttpStatus.OK);
+	}
+
+	@PostMapping("/process")
+	@ResponseBody
+	public WebAsyncTask<String> sayHello(@Valid @RequestBody String name) {
+		WebAsyncTask<String> task = new WebAsyncTask<String>(4000, () -> {
+			LOGGER.info("task execution start...:" + name);
+			Thread.sleep(3 * 1000);
+			return "Welcome " + name + "!";
+		});
+		task.onTimeout(() -> {
+			LOGGER.info("onTimeout...");
+			return "Request timed out...";
+		});
+		task.onError(() -> {
+			LOGGER.info("onError...");
+			return "Some error occurred...";
+		});
+		task.onCompletion(() -> {
+			LOGGER.info("task execution end...");
+		});
+		LOGGER.info("service end...");
+		return task;
 	}
 }

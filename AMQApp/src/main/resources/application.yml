@@ -15,3 +15,4 @@ consumer:
   
 response:
   queueName: onlineResponseQ
+  emailAddress: satishkumar.pk@gmail.com

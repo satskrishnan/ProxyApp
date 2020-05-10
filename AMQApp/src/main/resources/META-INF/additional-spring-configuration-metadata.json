@@ -23,5 +23,10 @@
     "name": "response.queue-name",
     "type": "java.lang.String",
     "description": "A description for 'response.queue-name'"
+  },
+  {
+    "name": "response.emailAddress",
+    "type": "java.lang.String",
+    "description": "A description for 'response.emailAddress'"
   }
 ]}
