@@ -2,6 +2,7 @@ package com.digital.core.banking.consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.sendgrid.Method;
@@ -19,13 +20,16 @@ public class EmailService {
 
 	private static final Logger log = LoggerFactory.getLogger(EmailService.class);
 
-	public void sendEmail(String message, String eMailAddress) {
+	@Value("${response.emailAddress}")
+	private String eMail;
+
+	public void sendEmail(String message) {
 
 		log.info("--------------------------------");
-
+		log.info("Email Address:" + eMail);
 		Email from = new Email("admin@splunklog.com");
 		String subject = "Event Processed.";
-		Email to = new Email(eMailAddress);
+		Email to = new Email(eMail);
 		Content content = new Content("text/plain", message);
 		Mail mail = new Mail(from, subject, to, content);
 

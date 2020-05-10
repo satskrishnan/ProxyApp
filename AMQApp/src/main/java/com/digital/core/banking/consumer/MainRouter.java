@@ -21,9 +21,6 @@ public class MainRouter extends RouteBuilder {
 	@Value("${response.queueName}")
 	private String fQName;
 
-	@Value("${response.emailAddress}")
-	private String eMail;
-	
 //	@Autowired
 //	private ProducerTemplate producerTemplate;
 
@@ -52,8 +49,8 @@ public class MainRouter extends RouteBuilder {
 				log.info("Receive message '{}' from queue.", message);
 				log.info("**********************************");
 			}
-		}).multicast().parallelProcessing().to("activemq://" + fQName).bean(EmailService.class, "sendEmail(${body},eMail)")
-				.setHeader(Exchange.HTTP_METHOD, HttpMethods.POST)
+		}).multicast().parallelProcessing().to("activemq://" + fQName)
+				.bean(EmailService.class, "sendEmail(${body})").setHeader(Exchange.HTTP_METHOD, HttpMethods.POST)
 				.setHeader(Exchange.CONTENT_TYPE, simple(MediaType.APPLICATION_JSON_VALUE)).removeHeaders("CamelHttp*")
 				.setBody().simple("${body}").to("http://localhost:8080/amqApp/api/process").end();
 
